@@ -6,7 +6,7 @@ import {
   createPostZodSchema,
   updatePostZodSchema,
 } from "./post.validation";
-
+import { CommentRoutes } from "../comment/comment.route";
 const router = Router();
 
 // POST /api/posts — create post (text, mediaKeys[], visibility)
@@ -36,5 +36,8 @@ router.patch(
   validateRequest(updatePostZodSchema),
   PostControllers.updatePost
 );
+
+// Mount comment routes
+router.use("/:postId/comments", CommentRoutes);
 
 export const PostRoutes = router;
