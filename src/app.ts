@@ -2,10 +2,13 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import express, { Request, Response } from "express";
 import passport, { session } from "passport";
+import "./config/passport";
 import expressSession from "express-session";
 import { envVars } from "./config/env";
 import notFound from "./middleware/notFound";
 import { globalErrorHandler } from "./middleware/globalErrorHandler";
+
+import { router } from "./routes/index";
 
 
 const app = express()
@@ -25,7 +28,7 @@ app.use(cors({
 }))
 
 
-// app.use("/api/v1", router)
+app.use("/api/v1", router)
 
 app.get("/", (req: Request, res: Response) => {
     res.status(200).json({

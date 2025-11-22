@@ -11,6 +11,8 @@ import { sendResponse } from "../../utils/sendResponse";
 import { setAuthCookie } from "../../utils/setCookie";
 import { createUserTokens } from "../../utils/userToken";
 import { AuthServices } from "./auth.service";
+import { User } from "../user/user.model";
+import bcrypt from "bcryptjs";
 
 const credentialsLogin = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -44,6 +46,8 @@ const credentialsLogin = catchAsync(
     })(req, res, next);
   }
 );
+
+
 const getNewAccessToken = catchAsync(async (req: Request, res: Response) => {
   const refreshToken = req.cookies.refreshToken;
   if (!refreshToken) {
@@ -66,20 +70,6 @@ const getNewAccessToken = catchAsync(async (req: Request, res: Response) => {
   });
 });
 const logout = catchAsync(async (req: Request, res: Response) => {
-
-  // for production
-
-  // res.clearCookie("accessToken", {
-  //   httpOnly: true,
-  //   secure: true,
-  //   sameSite: "none",
-  // });
-  // res.clearCookie("refreshToken", {
-  //   httpOnly: true,
-  //   secure: true,
-  //   sameSite: "none",
-  // });
-
   res.clearCookie("accessToken", {
     httpOnly: true,
     secure: false,
@@ -135,7 +125,6 @@ const setPassword = catchAsync(
     });
   }
 );
-
 
 const googleCallbackController = catchAsync(
   async (req: Request, res: Response) => {
