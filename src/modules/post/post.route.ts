@@ -9,7 +9,7 @@ import {
 import { CommentRoutes } from "../comment/comment.route";
 const router = Router();
 
-// POST /api/posts — create post (text, mediaKeys[], visibility)
+// create post (text, mediaKeys[], visibility)
 router.post(
   "/",
   checkAuth(),
@@ -17,16 +17,16 @@ router.post(
   PostControllers.createPost
 );
 
-// GET /api/posts/feed?cursor=...&limit=20 — global feed (public)
+// global feed (public)
 router.get("/feed", PostControllers.getFeed);
 
 // GET /api/posts/user/:userId?cursor... — user timeline
 router.get("/user/:userId", PostControllers.getUserTimeline);
 
-// GET /api/posts/:postId — get single post (with top comments)
+// get single post (with top comments)
 router.get("/:postId", PostControllers.getSinglePost);
 
-// DELETE /api/posts/:postId — delete (soft delete)
+// delete (soft delete)
 router.delete("/:postId", checkAuth(), PostControllers.deletePost);
 
 // PATCH /api/posts/:postId — update post (optional)
