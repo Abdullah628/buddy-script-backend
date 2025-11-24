@@ -41,8 +41,8 @@ const getFeed = async (
   const modifiedQuery = { ...query };
 
   const baseQuery = Post.find({
-    visibility: "public",
     isDeleted: false,
+    visibility: "public",
   }).populate("authorId", "firstName lastName avatarUrl");
 
   const queryBuilder = new QueryBuilder(baseQuery, modifiedQuery)
@@ -77,9 +77,9 @@ const getUserTimeline = async (
     isDeleted: false,
   };
 
-  if (userId !== currentUserId) {
-    filter.visibility = "public";
-  }
+  // if (userId !== currentUserId) {
+  //   filter.visibility = "public";
+  // }
 
   const baseQuery = Post.find(filter).populate(
     "authorId",
@@ -181,6 +181,13 @@ const updatePost = async (
   return updatedPost;
 };
 
+// get all posts those are public from entire collection
+const getPublicPosts = async () => {
+  const posts = await Post.find({ visibility: "public", isDeleted: false });
+  return posts;
+};
+
+
 export const PostServices = {
   createPost,
   getFeed,
@@ -188,4 +195,5 @@ export const PostServices = {
   getSinglePost,
   deletePost,
   updatePost,
+  getPublicPosts,
 };

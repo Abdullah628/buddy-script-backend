@@ -11,93 +11,11 @@ import { IGenericResponse } from "../../interfaces/common";
 const getMe = async (userId: string) => {
   const user = await User.findById(userId)
     .select("-password")
-    .populate({
-      path: "org",
-      populate: { path: "plan" },
-    });
 
   return {
     data: user,
   };
 };
-
-// keep your uniq
-const uniq = <T extends string | number>(arr: (T | undefined)[]) =>
-  Array.from(new Set((arr || []).filter(Boolean))) as T[];
-
-// Sanitize payload coming from the frontend for user.featureAccess.
-// Accept 'any' so we don't tie it to the Feature model interface.
-// Now handles new action object structure with {description, value, isActive}
-const sanitize = (features: any[] = []): any[] =>
-  (features || [])
-    .map((f) => {
-      const cleanedSubs = (f.subFeatures || [])
-        .map((sf: any) => {
-          // Handle both old string format and new object format for actions
-          const actions = (sf.actions || []).map((action: any) => {
-            if (typeof action === "string") {
-              // Convert old string format to new object format
-              return {
-                description: action.charAt(0).toUpperCase() + action.slice(1),
-                value: action,
-                isActive: true,
-              };
-            }
-            // Already in new object format, validate structure
-            return {
-              description: String(
-                action.description || action.value || "Unknown"
-              ),
-              value: String(action.value || action.description || "unknown"),
-              isActive: Boolean(
-                action.isActive !== undefined ? action.isActive : true
-              ),
-            };
-          }); // Include all actions regardless of isActive status
-
-          return {
-            name: String(sf.name),
-            key: String(sf.key),
-            actions,
-          };
-        })
-        .filter((sf: any) => (sf.actions?.length || 0) > 0);
-
-      // Handle both old string format and new object format for parent actions
-      const actions = (f.actions || []).map((action: any) => {
-        if (typeof action === "string") {
-          // Convert old string format to new object format
-          return {
-            description: action.charAt(0).toUpperCase() + action.slice(1),
-            value: action,
-            isActive: true,
-          };
-        }
-        // Already in new object format, validate structure
-        return {
-          description: String(action.description || action.value || "Unknown"),
-          value: String(action.value || action.description || "unknown"),
-          isActive: Boolean(
-            action.isActive !== undefined ? action.isActive : true
-          ),
-        };
-      }); // Include all actions regardless of isActive status
-
-      const cleaned = {
-        name: String(f.name),
-        key: String(f.key),
-        actions,
-        subFeatures: cleanedSubs,
-      };
-
-      return cleaned;
-    })
-    .filter(
-      (f: any) =>
-        (f.actions?.length || 0) > 0 || (f.subFeatures?.length || 0) > 0
-    );
-
-
 
 const createUser = async (payload: Partial<IUser>, logActor?: JwtPayload) => {
   const {

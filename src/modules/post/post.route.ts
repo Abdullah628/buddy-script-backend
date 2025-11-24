@@ -23,6 +23,9 @@ router.get("/feed", PostControllers.getFeed);
 // GET /api/posts/user/:userId?cursor... — user timeline
 router.get("/user/:userId", PostControllers.getUserTimeline);
 
+// get public posts from entire collection
+router.get("/public", PostControllers.getPublicPosts);
+
 // get single post (with top comments)
 router.get("/:postId", PostControllers.getSinglePost);
 

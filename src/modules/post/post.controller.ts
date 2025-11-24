@@ -58,6 +58,19 @@ const getUserTimeline = catchAsync(
   }
 );
 
+// get public posts from entire collection
+const getPublicPosts = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const result = await PostServices.getPublicPosts();
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Public Posts Retrieved Successfully",
+      data: result,
+    });
+  }
+);
+
 const getSinglePost = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { postId } = req.params;
@@ -115,4 +128,5 @@ export const PostControllers = {
   getSinglePost,
   deletePost,
   updatePost,
+  getPublicPosts,
 };
