@@ -9,7 +9,7 @@ import {
 
 const router = Router({ mergeParams: true });
 
-// POST /api/posts/:postId/comments — add comment (parentCommentId optional)
+// POST /api/posts/:postId/comments — add comment
 router.post(
   "/",
   checkAuth(),

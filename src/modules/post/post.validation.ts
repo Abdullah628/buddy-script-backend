@@ -14,8 +14,7 @@ const mediaSchema = z.object({
 export const createPostZodSchema = z.object({
   text: z
     .string({ message: "Text must be a string" })
-    .min(1, { message: "Post text is required" })
-    .max(2000, { message: "Post text cannot exceed 2000 characters" }),
+    .max(2000, { message: "Post text cannot exceed 2000 characters" }).optional(),
   media: z.array(mediaSchema).optional(),
   visibility: z
     .enum(["public", "private"], {

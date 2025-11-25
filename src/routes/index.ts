@@ -3,6 +3,7 @@ import { AuthRoutes } from "../modules/auth/auth.route"
 import { UserRoutes } from "../modules/user/user.route";
 import { PostRoutes } from "../modules/post/post.route";
 import { LikeRoutes } from "../modules/like/like.route";
+import { UploadRoutes } from "../modules/upload/upload.route";
 
 export const router = Router();
 
@@ -25,6 +26,11 @@ const moduleRoutes = [
     {
         path: "/",
         route: LikeRoutes
+    },
+
+    {
+        path: "/uploads",
+        route: UploadRoutes
     },
 
 ];
