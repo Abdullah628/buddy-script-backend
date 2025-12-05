@@ -3,11 +3,7 @@ import httpStatus from "http-status-codes";
 import AppError from "../../errorHelpers/AppError";
 import { getConfiguredCloudinary } from "../../utils/cloudinary";
 
-/**
- * Uploads a file (base64 data URI or remote URL) to Cloudinary.
- * @param file - data URI (base64) or remote URL or local path supported by Cloudinary uploader
- * @param folder - optional folder name in Cloudinary
- */
+// Upload image to cloudinary
 const uploadImage = async (file: string, folder?: string) => {
   if (!file) {
     throw new AppError(httpStatus.BAD_REQUEST, "No file provided for upload");
