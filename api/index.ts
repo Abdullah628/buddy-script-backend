@@ -1,3 +1,4 @@
+import type { VercelRequest, VercelResponse } from "@vercel/node";
 import mongoose from "mongoose";
 import app from "../src/app";
 import { envVars } from "../src/config/env";
@@ -19,7 +20,13 @@ const connectDB = async () => {
   }
 };
 
-export default async (req: any, res: any) => {
-  await connectDB();
-  return app(req, res);
-};
+export default async function handler(req: VercelRequest, res: VercelResponse) {
+  try {
+    await connectDB();
+    // Pass request to Express app
+    app(req as any, res as any);
+  } catch (error) {
+    console.error("Handler error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
