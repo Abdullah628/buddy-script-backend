@@ -2,9 +2,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
-import { Role, IsActive } from "../modules/user/user.interface";
+import {  IsActive } from "../modules/user/user.interface";
 import { User } from "../modules/user/user.model";
-import { envVars } from "./env";
 import { verifyPassword } from "../utils/hash";
 
 // ---------- Local (email/password) ----------
@@ -16,7 +15,6 @@ passport.use(
     },
     async (email: string, password: string, done: any) => {
       try {
-        console.log("LocalStrategy invoked for email:", email);
         const normalizedEmail = String(email).trim().toLowerCase();
         const user = await User.findOne({ email: normalizedEmail });
 
